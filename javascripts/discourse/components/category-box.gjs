@@ -27,8 +27,64 @@ export default class extends Component {
     return abbr;
   }
 
+  get unreadCount() {
+    const category = this.args.category;
+
+    return (
+      category.unreadTopics ??
+      category.unread_topics ??
+      category.unread_count ??
+      category.unread ??
+      0
+    );
+  }
+
+  get newCount() {
+    const category = this.args.category;
+
+    return (
+      category.newTopics ??
+      category.new_topics ??
+      category.new_count ??
+      category.newTopicsCount ??
+      0
+    );
+  }
+
+  get hasActivity() {
+    return this.unreadCount > 0 || this.newCount > 0;
+  }
+
+  get activityTitle() {
+    if (this.newCount > 0 && this.unreadCount > 0) {
+      return `${this.newCount} nouveau(x) et ${this.unreadCount} non lu(s)`;
+    }
+
+    if (this.newCount > 0) {
+      return `${this.newCount} nouveau(x)`;
+    }
+
+    if (this.unreadCount > 0) {
+      return `${this.unreadCount} non lu(s)`;
+    }
+
+    return "Nouveaux contenus dans cette catégorie";
+  }
+
+  get debugCategory() {
+    // DEBUG TEMPORAIRE :
+    // Ouvrez la console du navigateur sur la page catégories
+    // pour voir quelles propriétés sont réellement disponibles
+    // sur l'objet @category.
+    console.log("CATEGORY BOX DATA", this.args.category);
+    return null;
+  }
+
   <template>
     {{! template-lint-disable no-nested-interactive }}
+
+    {{! DEBUG TEMPORAIRE : supprimer cette ligne après vérification console }}
+    {{this.debugCategory}}
 
     <a
       href={{@category.url}}
@@ -37,9 +93,18 @@ export default class extends Component {
       data-url={{@category.url}}
       class="category category-box category-box-{{@category.slug}}
         {{if @category.isMuted 'muted'}}
-        {{if this.noCategoryStyle 'no-category-boxes-style'}}"
+        {{if this.noCategoryStyle 'no-category-boxes-style'}}
+        {{if this.hasActivity 'has-activity'}}"
     >
       <div class="category-box-inner">
+        {{#if this.hasActivity}}
+          <span
+            class="category-activity-dot"
+            title={{this.activityTitle}}
+            aria-label={{this.activityTitle}}
+          ></span>
+        {{/if}}
+
         <div
           class="category-logo
             {{if @category.uploaded_logo.url '' 'no-logo-present'}}"
