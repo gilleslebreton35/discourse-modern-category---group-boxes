@@ -28,31 +28,39 @@ export default class extends Component {
   }
 
   get unreadCount() {
-    const category = this.args.category;
-
-    return (
-      category.unreadTopics ??
-      category.unread_topics ??
-      category.unread_count ??
-      category.unread ??
-      0
-    );
+    return this.args.category.unreadTopicsCount ?? 0;
   }
 
   get newCount() {
-    const category = this.args.category;
-
-    return (
-      category.newTopics ??
-      category.new_topics ??
-      category.new_count ??
-      category.newTopicsCount ??
-      0
-    );
+    return this.args.category.newTopicsCount ?? 0;
   }
 
   get hasActivity() {
-    return this.unreadCount > 0 || this.newCount > 0;
+    return this.newCount > 0 || this.unreadCount > 0;
+  }
+
+  get badgeCount() {
+    if (this.newCount > 0) {
+      return this.newCount;
+    }
+
+    if (this.unreadCount > 0) {
+      return this.unreadCount;
+    }
+
+    return 0;
+  }
+
+  get badgeClass() {
+    if (this.newCount > 0) {
+      return "is-new";
+    }
+
+    if (this.unreadCount > 0) {
+      return "is-unread";
+    }
+
+    return "";
   }
 
   get activityTitle() {
@@ -71,20 +79,8 @@ export default class extends Component {
     return "Nouveaux contenus dans cette catégorie";
   }
 
-  get debugCategory() {
-    // DEBUG TEMPORAIRE :
-    // Ouvrez la console du navigateur sur la page catégories
-    // pour voir quelles propriétés sont réellement disponibles
-    // sur l'objet @category.
-    console.log("CATEGORY BOX DATA", this.args.category);
-    return null;
-  }
-
   <template>
     {{! template-lint-disable no-nested-interactive }}
-
-    {{! DEBUG TEMPORAIRE : supprimer cette ligne après vérification console }}
-    {{this.debugCategory}}
 
     <a
       href={{@category.url}}
@@ -99,10 +95,12 @@ export default class extends Component {
       <div class="category-box-inner">
         {{#if this.hasActivity}}
           <span
-            class="category-activity-dot"
+            class="category-activity-badge {{this.badgeClass}}"
             title={{this.activityTitle}}
             aria-label={{this.activityTitle}}
-          ></span>
+          >
+            {{this.badgeCount}}
+          </span>
         {{/if}}
 
         <div
