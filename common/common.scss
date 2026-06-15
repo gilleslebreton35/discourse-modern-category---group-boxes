@@ -385,3 +385,33 @@
   box-shadow: 0 0 0 2px var(--secondary);
   z-index: 5;
 }
+.category-box-inner {
+  position: relative;
+}
+
+.category-activity-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  box-shadow: 0 0 0 2px var(--secondary);
+  z-index: 5;
+}
+
+.category-activity-badge.is-new {
+  background: #4c9aff;
+}
+
+.category-activity-badge.is-unread {
+  background: #f0a43c;
+}
