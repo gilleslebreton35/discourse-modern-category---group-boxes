@@ -19,9 +19,11 @@ export default class extends Component {
     let abbr = this.args.category.name.replace(" and", "").split(" ");
 
     if (abbr.length > 1) {
-      abbr = abbr[0].charAt(0).toUpperCase() + abbr[1].charAt(0).toLowerCase();
+      abbr =
+        abbr[0].charAt(0).toUpperCase() + abbr[1].charAt(0).toLowerCase();
     } else {
-      abbr = abbr[0].charAt(0).toUpperCase() + abbr[0].charAt(1).toLowerCase();
+      abbr =
+        abbr[0].charAt(0).toUpperCase() + abbr[0].charAt(1).toLowerCase();
     }
 
     return abbr;
@@ -77,30 +79,6 @@ export default class extends Component {
         {{if this.hasActivity 'has-activity'}}"
     >
       <div class="category-box-inner">
-        {{#if this.hasActivity}}
-          <div class="category-activity-badges">
-            {{#if this.hasNew}}
-              <span
-                class="category-activity-badge is-new"
-                title={{this.newTitle}}
-                aria-label={{this.newTitle}}
-              >
-                {{this.newBadgeCount}}
-              </span>
-            {{/if}}
-
-            {{#if this.hasUnread}}
-              <span
-                class="category-activity-badge is-unread"
-                title={{this.unreadTitle}}
-                aria-label={{this.unreadTitle}}
-              >
-                {{this.unreadBadgeCount}}
-              </span>
-            {{/if}}
-          </div>
-        {{/if}}
-
         <div
           class="category-logo
             {{if @category.uploaded_logo.url '' 'no-logo-present'}}"
@@ -119,11 +97,37 @@ export default class extends Component {
           <div class="category-box-heading">
             <a class="parent-box-link" href={{@category.url}}>
               <h3>
-                <CategoryTitleBefore @category={{@category}} />
-                {{#if @category.read_restricted}}
-                  {{icon "lock"}}
+                <span class="category-title-text">
+                  <CategoryTitleBefore @category={{@category}} />
+                  {{#if @category.read_restricted}}
+                    {{icon "lock"}}
+                  {{/if}}
+                  {{@category.name}}
+                </span>
+
+                {{#if this.hasActivity}}
+                  <span class="category-activity-badges">
+                    {{#if this.hasNew}}
+                      <span
+                        class="category-activity-badge is-new"
+                        title={{this.newTitle}}
+                        aria-label={{this.newTitle}}
+                      >
+                        {{this.newBadgeCount}}
+                      </span>
+                    {{/if}}
+
+                    {{#if this.hasUnread}}
+                      <span
+                        class="category-activity-badge is-unread"
+                        title={{this.unreadTitle}}
+                        aria-label={{this.unreadTitle}}
+                      >
+                        {{this.unreadBadgeCount}}
+                      </span>
+                    {{/if}}
+                  </span>
                 {{/if}}
-                {{@category.name}}
               </h3>
             </a>
           </div>
