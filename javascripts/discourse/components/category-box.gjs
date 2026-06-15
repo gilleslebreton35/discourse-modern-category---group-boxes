@@ -96,14 +96,16 @@ export default class extends Component {
         <div class="category-details">
           <div class="category-box-heading">
             <a class="parent-box-link" href={{@category.url}}>
-              <h3>
-                <span class="category-title-text">
-                  <CategoryTitleBefore @category={{@category}} />
-                  {{#if @category.read_restricted}}
-                    {{icon "lock"}}
-                  {{/if}}
-                  {{@category.name}}
-                </span>
+              <div class="category-heading-row">
+                <h3 class="category-title">
+                  <span class="category-title-text">
+                    <CategoryTitleBefore @category={{@category}} />
+                    {{#if @category.read_restricted}}
+                      {{icon "lock"}}
+                    {{/if}}
+                    <span class="category-name">{{@category.name}}</span>
+                  </span>
+                </h3>
 
                 {{#if this.hasActivity}}
                   <span class="category-activity-badges">
@@ -128,7 +130,7 @@ export default class extends Component {
                     {{/if}}
                   </span>
                 {{/if}}
-              </h3>
+              </div>
             </a>
           </div>
 
