@@ -35,48 +35,32 @@ export default class extends Component {
     return this.args.category.newTopicsCount ?? 0;
   }
 
+  get hasNew() {
+    return this.newCount > 0;
+  }
+
+  get hasUnread() {
+    return this.unreadCount > 0;
+  }
+
   get hasActivity() {
-    return this.newCount > 0 || this.unreadCount > 0;
+    return this.hasNew || this.hasUnread;
   }
 
-  get badgeCount() {
-    if (this.newCount > 0) {
-      return this.newCount;
-    }
-
-    if (this.unreadCount > 0) {
-      return this.unreadCount;
-    }
-
-    return 0;
+  get newBadgeCount() {
+    return this.newCount > 99 ? "99+" : this.newCount;
   }
 
-  get badgeClass() {
-    if (this.newCount > 0) {
-      return "is-new";
-    }
-
-    if (this.unreadCount > 0) {
-      return "is-unread";
-    }
-
-    return "";
+  get unreadBadgeCount() {
+    return this.unreadCount > 99 ? "99+" : this.unreadCount;
   }
 
-  get activityTitle() {
-    if (this.newCount > 0 && this.unreadCount > 0) {
-      return `${this.newCount} nouveau(x) et ${this.unreadCount} non lu(s)`;
-    }
+  get newTitle() {
+    return `${this.newCount} nouveau(x)`;
+  }
 
-    if (this.newCount > 0) {
-      return `${this.newCount} nouveau(x)`;
-    }
-
-    if (this.unreadCount > 0) {
-      return `${this.unreadCount} non lu(s)`;
-    }
-
-    return "Nouveaux contenus dans cette catégorie";
+  get unreadTitle() {
+    return `${this.unreadCount} non lu(s)`;
   }
 
   <template>
@@ -94,13 +78,27 @@ export default class extends Component {
     >
       <div class="category-box-inner">
         {{#if this.hasActivity}}
-          <span
-            class="category-activity-badge {{this.badgeClass}}"
-            title={{this.activityTitle}}
-            aria-label={{this.activityTitle}}
-          >
-            {{this.badgeCount}}
-          </span>
+          <div class="category-activity-badges">
+            {{#if this.hasNew}}
+              <span
+                class="category-activity-badge is-new"
+                title={{this.newTitle}}
+                aria-label={{this.newTitle}}
+              >
+                {{this.newBadgeCount}}
+              </span>
+            {{/if}}
+
+            {{#if this.hasUnread}}
+              <span
+                class="category-activity-badge is-unread"
+                title={{this.unreadTitle}}
+                aria-label={{this.unreadTitle}}
+              >
+                {{this.unreadBadgeCount}}
+              </span>
+            {{/if}}
+          </div>
         {{/if}}
 
         <div
