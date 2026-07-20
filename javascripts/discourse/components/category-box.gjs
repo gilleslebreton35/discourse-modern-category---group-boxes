@@ -11,7 +11,7 @@ import lazyHash from "discourse/helpers/lazy-hash";
 
 export default class extends Component {
   get backgroundColor() {
-    return htmlSafe(`background-color: #${this.args.category.color}`);
+    return trustHTML(`background-color: #${this.args.category.color}`);
   }
 
   get getAbbreviation() {
@@ -134,7 +134,7 @@ export default class extends Component {
           </div>
 
           <div class="description">
-            <p>{{htmlSafe0 @category.description_excerpt}}</p>
+            <p>{{trustHTML @category.description_excerpt}}</p>
           </div>
 
           {{#if @category.isGrandParent}}
